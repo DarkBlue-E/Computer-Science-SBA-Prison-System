@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 const char INMATE_DATA_FILENAME[] = "Inmates Database.txt";
 const char UNSPECIFIED_CONTENT [] = "<BLANK>";
@@ -9,13 +10,15 @@ struct InmateEntry {
 char IFname [10000];
 char Iaddre[10000];
 char INdob[10000];
-char CriSLO [10000];
-char SenS [10000];
+char CriSLO [10][10000];
+char SenS [10][10000];
 int INage;
 };
 
+
 struct InmateEntry Data;
 const int DATA_SZ = sizeof(Data);
+
 
 struct InmateEntry* Inmates;
 int entryCount = 0;
@@ -23,11 +26,23 @@ int entryCount = 0;
 char* readChars(char*, int, FILE*);  // function prototype declaration to prevent compiler type conflict error
 
 
+void calculateAge() {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+
+    int currentYear = tm.tm_year + 1900;
+    int birthYear;
+
+    sscanf(Data.INdob, "%*d/%*d/%d", &birthYear);
+    Data.INage = currentYear - birthYear;
+}
+
 int main() {
     loadInmateData();
     mainscreen();
     return 0;
 }
+
 
 void loadInmateData() {
     FILE *fptr;
@@ -226,30 +241,65 @@ void displayInmateSummary(float ProbP, float TotSE) {
     printf("The number of persons in the program is %d\n", entryCount);
 }
 
+
 void screen2() {
     char *token;
     float TotSE = 0.0;
     float ProbP = 0.0;
     Data.INage = 0;  // need to pre-initialize this variable
 
+
     displayScreen2();
 
     promptLn("Enter Inmate full Name. Please follow this format and enter the name (Last name, Middle Name, First Name)\n",
               Data.IFname, sizeof(Data.IFname));
 
-    promptInt("\nEnter Inmate Age: ", &Data.INage, 3);
+   promptLn("\nEnter Inmate Date of Birth. The format for this is DD/MM/YY:\n", Data.INdob, sizeof(Data.INdob));
+
+   calculateAge();
+
+   printf("\nYour current age is: %d\n", Data.INage);
 
     promptLn("\nEnter Inmate Full Address. The format for the inmates address is (lot number, street, post office, parish)\n",
               Data.Iaddre, sizeof(Data.Iaddre));
 
-    promptLn("\nEnter Inmate Date of Birth. The format for this is DD/MM/YY:", Data.INdob, sizeof(Data.INdob));
-    while (getchar()!= '\n');
+    
+int choice;
+int randomYears;
 
-    promptLn("\nWhat crime or crimes did the criminal commit?\n", Data.CriSLO, sizeof(Data.CriSLO));
+    strcpy( Data.CriSLO [0],"Rape");
+    strcpy(Data.CriSLO [1],"Theft");
+    strcpy(Data.CriSLO [2],"Arson");
+    strcpy(Data.CriSLO [3],"Assault");
+    strcpy(Data.CriSLO [4],"Battery");
 
+    
+    srand(time(NULL));
+
+
+    printf("Choose a crime from the following list:\n");
+
+    for (int i = 0; i < 5; i++) {
+        printf("[%d] %s\n", i + 1, Data.CriSLO[i]);
+    }
+
+    // Allow the user to choose only 1 crime
+    for (int i = 0; i < 1; i++) {
+        printf("Enter the number corresponding to the crime: ");
+        scanf("%d", &choice);
+
+        if (choice >= 1 && choice <= 5) {
+             strcpy(Data.CriSLO[0], Data.CriSLO[choice - 1]);
+            int randomYears = rand() % 100 + 1;
+            sprintf(Data.SenS[0], "%d", randomYears);
+
+        
+        }
+    }
+
+    
     displayInmateSenSHint();
-    promptLn("\n\nWhat is the sentencing for this crime or crimes listed above? Please use a comma to separate the sentences.\n",
-              Data.SenS, sizeof(Data.SenS));
+    
 
     sanitizeInmateDtl (Data.IFname);
     sanitizeInmateDtl (Data.Iaddre);
@@ -272,6 +322,8 @@ void screen2() {
 
     saveInmateData();
 
+    while (getchar() != '\n');
+    
     pause(NULL, 1);
 
     adminscreen();
@@ -332,10 +384,12 @@ void displayInmateData() {
         printf ("Age: %d\n", Data.INage);
         printf ("Address: %s\n", Data.Iaddre);
         printf ("Date of Birth: %s\n", Data.INdob);
-        printf ("Crime(s) Committed: %s\n", Data.CriSLO);
-        printf ("Sentence(s) Received: %s year(s)\n\n", Data.SenS);
+        printf("Crime: %s\n", Data.CriSLO);
+        printf("Sentence: %s year(s)\n\n", Data.SenS);
+        }
     }
-}
+
+            
 
 /*******************************************************************/
 /****************** Utility/Convenience Functions ******************/
