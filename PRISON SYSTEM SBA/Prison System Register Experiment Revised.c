@@ -8,7 +8,7 @@ const char UNSPECIFIED_CONTENT [] = "<BLANK>";
 
 struct InmateEntry {
 char IFname [10000];
-char Iaddre[10000];
+char Indre[10000];
 char INdob[10000];
 char CriSLO [10][10000];
 char SenS [10][10000];
@@ -39,7 +39,7 @@ void calculateAge() {
 
 int main() {
     loadInmateData();
-    mainscreen();
+    mainstream();
     return 0;
 }
 
@@ -53,7 +53,7 @@ void loadInmateData() {
     {
         while(readChars (Data.IFname, sizeof(Data.IFname), fptr)) {
             freadInt (&Data.INage,  fptr);
-            readChars (Data.Iaddre, sizeof(Data.Iaddre), fptr);
+            readChars (Data.Indre, sizeof(Data.Indre), fptr);
             readChars (Data.INdob,  sizeof(Data.INdob), fptr);
             readChars (Data.CriSLO, sizeof(Data.CriSLO), fptr);
             readChars (Data.SenS,   sizeof(Data.SenS), fptr);
@@ -76,18 +76,18 @@ void loadInmateData() {
 void displayMainScreen() {
     clearScr();  //refreshes the screen
     printf (" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
-    printf ("                                      WELCOME TO THE PAUL'S WARDHOUSE                                  \n\n");
+    printf ("                                      WELCOME TO THE PAUL'S WARDEN HOUSE                                  \n\n");
     printf ("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
     printf ("                                                  MAIN MENU                                             \n\n");
     printf ("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
-    printf ("Please enter the number that you see at the side in order to select the specifc task that you want to complete.\n");
+    printf ("Please enter the number that you see at the side in order to select the specific task that you want to complete.\n");
     printf ("[1] Screen 1 to enter administrator information\n");
     printf ("[2] Screen 2 to enter inmate information\n");
     printf ("[3] Screen 3 to access inmate information\n");
     printf ("[4] Exit the program\n");
 }
 
-void mainscreen() {
+void mainstream() {
     int choice = 0;
 
     do {
@@ -174,7 +174,7 @@ void screen1() {
             break;
 
             case 3:
-            mainscreen();
+            mainstream();
             break;
 
             default:
@@ -203,7 +203,7 @@ void adminscreen() {
         switch (choice)
         {
             case 1:
-            mainscreen();
+            mainstream();
             break;
 
             case 2:
@@ -227,13 +227,13 @@ void displayScreen2() {
 }
 
 void displayInmateSenSHint() {
-    printf ("\n(Please note that if the senetnce is not over 1 year and it is only a few months, please write the months using decimal points. ");
+    printf ("\n(Please note that if the sentence is not over 1 year and it is only a few months, please write the months using decimal points. ");
     printf ("For example, if the sentence of the criminal is only 6 months, for the years alloted for the crime, you will write (0.5) to state 6 months, ");
     printf ("otherwise just write the whole number if the sentence given is in years.)");
 }
 
 void displayInmateSummary(float ProbP, float TotSE) {
-    printf ("\n\nAn inmate is elligable for probabtion after having served half of their total sentence.");
+    printf ("\n\nAn inmate is eligible for probation after having served half of their total sentence.");
     printf (" This will be done through an assessment that will test to see if the inmates' behaviour have improved since they have been inside jail.");
     printf (" This assessment is given on a date which will be decided by the judge. Thus, this inmate is eligible for probation in: %.1f years time.", ProbP);
     printf("\n\n");
@@ -241,7 +241,63 @@ void displayInmateSummary(float ProbP, float TotSE) {
     printf("The number of persons in the program is %d\n", entryCount);
 }
 
+void InmateCrimes() {
 
+int choice;
+int randomYears;
+
+    strcpy( Data.CriSLO[0],"Abuse"); 
+    strcpy(Data.CriSLO [1],"Abusive Sexual Contact");
+    strcpy(Data.CriSLO [2],"Arson");
+    strcpy(Data.CriSLO [3],"Assault");
+    strcpy(Data.CriSLO [4],"Careless Driving");
+    strcpy(Data.CriSLO [5],"Child Abuse");
+    strcpy(Data.CriSLO [6],"Deadly Weapon");
+    strcpy(Data.CriSLO [7],"Embezzlement");
+    strcpy(Data.CriSLO [8],"Illegal Firearm");
+    strcpy(Data.CriSLO [9],"Kidnapping");
+    strcpy(Data.CriSLO [10],"Murder");
+    strcpy(Data.CriSLO [11],"Possession Of Drugs");
+    strcpy(Data.CriSLO [12],"Rape");
+    strcpy(Data.CriSLO [13],"Robbery");
+    strcpy(Data.CriSLO [14],"Stalking");
+    strcpy(Data.CriSLO [15],"Tax Evasion");
+    strcpy(Data.CriSLO [16],"Terrorism");
+    strcpy(Data.CriSLO [17],"Theft");
+    strcpy(Data.CriSLO [18],"Vandalism");
+    strcpy(Data.CriSLO [19],"White Collar Crime");
+
+    
+    srand(time(NULL));
+
+
+    printf("Choose a crime from the following list:\n");
+
+    for (int i = 0; i < 20; i++) {
+        printf("[%d] %s\n", i + 1, Data.CriSLO[i]);
+    }
+
+    // Allow the user to choose only 1 crime
+    for (int i = 0; i < 1; i++) {
+        printf("Enter the number corresponding to the crime: ");
+        scanf("%d", &choice);
+
+        if (choice >= 1 && choice <= 20) {
+             strcpy(Data.CriSLO[0], Data.CriSLO[choice - 1]);
+            int randomYears = rand() % 100 + 1;
+            sprintf(Data.SenS[0], "%d", randomYears);
+
+        
+        }
+    }
+
+
+
+
+
+
+
+}
 void screen2() {
     char *token;
     float TotSE = 0.0;
@@ -261,48 +317,15 @@ void screen2() {
    printf("\nYour current age is: %d\n", Data.INage);
 
     promptLn("\nEnter Inmate Full Address. The format for the inmates address is (lot number, street, post office, parish)\n",
-              Data.Iaddre, sizeof(Data.Iaddre));
+              Data.Indre, sizeof(Data.Indre));
 
-    
-int choice;
-int randomYears;
-
-    strcpy( Data.CriSLO [0],"Rape");
-    strcpy(Data.CriSLO [1],"Theft");
-    strcpy(Data.CriSLO [2],"Arson");
-    strcpy(Data.CriSLO [3],"Assault");
-    strcpy(Data.CriSLO [4],"Battery");
-
-    
-    srand(time(NULL));
-
-
-    printf("Choose a crime from the following list:\n");
-
-    for (int i = 0; i < 5; i++) {
-        printf("[%d] %s\n", i + 1, Data.CriSLO[i]);
-    }
-
-    // Allow the user to choose only 1 crime
-    for (int i = 0; i < 1; i++) {
-        printf("Enter the number corresponding to the crime: ");
-        scanf("%d", &choice);
-
-        if (choice >= 1 && choice <= 5) {
-             strcpy(Data.CriSLO[0], Data.CriSLO[choice - 1]);
-            int randomYears = rand() % 100 + 1;
-            sprintf(Data.SenS[0], "%d", randomYears);
-
-        
-        }
-    }
-
+    InmateCrimes();
     
     displayInmateSenSHint();
     
 
     sanitizeInmateDtl (Data.IFname);
-    sanitizeInmateDtl (Data.Iaddre);
+    sanitizeInmateDtl (Data.Indre);
     sanitizeInmateDtl (Data.INdob);
     sanitizeInmateDtl (Data.CriSLO);
     sanitizeInmateDtl (Data.SenS);
@@ -346,7 +369,7 @@ void saveInmateData() {
 
     Data = Inmates[entryCount-1];
 
-    fprintf (fptr, "%s\n%d\n%s\n%s\n%s\n%s\n%s\n\n", Data.IFname,Data.INage, Data.Iaddre, Data.INdob,Data.CriSLO, Data.SenS);
+    fprintf (fptr, "%s\n%d\n%s\n%s\n%s\n%s\n%s\n\n", Data.IFname,Data.INage, Data.Indre, Data.INdob,Data.CriSLO, Data.SenS);
     fclose (fptr);
 }
 
@@ -367,7 +390,7 @@ void screen3(){
 
     pause ("[ENTER] Return to main menu\n", 0);
 
-    mainscreen();
+    mainstream();
 }
 
 void displayInmateData() {
@@ -382,7 +405,7 @@ void displayInmateData() {
 
         printf ("Name: %s\n", Data.IFname);
         printf ("Age: %d\n", Data.INage);
-        printf ("Address: %s\n", Data.Iaddre);
+        printf ("Address: %s\n", Data.Indre);
         printf ("Date of Birth: %s\n", Data.INdob);
         printf("Crime: %s\n", Data.CriSLO);
         printf("Sentence: %s year(s)\n\n", Data.SenS);
