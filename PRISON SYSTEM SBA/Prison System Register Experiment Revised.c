@@ -271,7 +271,7 @@ int randomYears;
     srand(time(NULL));
 
 
-    printf("Choose a crime from the following list:\n");
+    printf("\nChoose a crime from the following list:\n");
 
     for (int i = 0; i < 20; i++) {
         printf("[%d] %s\n", i + 1, Data.CriSLO[i]);
@@ -279,7 +279,7 @@ int randomYears;
 
     // Allow the user to choose only 1 crime
     for (int i = 0; i < 1; i++) {
-        printf("Enter the number corresponding to the crime: ");
+        printf("\nEnter the number corresponding to the crime: ");
         scanf("%d", &choice);
 
         if (choice >= 1 && choice <= 20) {
