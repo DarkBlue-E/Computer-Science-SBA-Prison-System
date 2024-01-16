@@ -279,7 +279,7 @@ int randomYears;
 
     // Allow the user to choose only 1 crime
     for (int i = 0; i < 1; i++) {
-        printf("\nEnter the number corresponding to the crime:\n ");
+        printf("\nEnter the number corresponding to the crime: ");
         scanf("%d", &choice);
 
         if (choice >= 1 && choice <= 20) {
