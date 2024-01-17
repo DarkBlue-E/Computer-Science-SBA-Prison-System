@@ -310,7 +310,7 @@ void screen2() {
     promptLn("Enter Inmate full Name. Please follow this format and enter the name (Last name, Middle Name, First Name)\n",
               Data.IFname, sizeof(Data.IFname));
 
-   promptLn("\nEnter Inmate Date of Birth. The format for this is DD/MM/YY:\n", Data.INdob, sizeof(Data.INdob));
+   promptLn("\nEnter Inmate Date of Birth. The format for this is DD/MM/YYYY:\n", Data.INdob, sizeof(Data.INdob));
 
    calculateAge();
 
