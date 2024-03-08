@@ -39,7 +39,7 @@ void calculateAge() {
 
 int main() {
     loadInmateData();
-    mainstream();
+    mainscreen();
     return 0;
 }
 
@@ -87,7 +87,7 @@ void displayMainScreen() {
     printf ("[4] Exit the program\n");
 }
 
-void mainstream() {
+void mainscreen() {
     int choice = 0;
 
     do {
@@ -174,7 +174,7 @@ void screen1() {
             break;
 
             case 3:
-            mainstream();
+            mainscreen();
             break;
 
             default:
@@ -203,7 +203,7 @@ void adminscreen() {
         switch (choice)
         {
             case 1:
-            mainstream();
+            mainscreen();
             break;
 
             case 2:
@@ -227,15 +227,13 @@ void displayScreen2() {
 }
 
 void displayInmateSenSHint() {
-    printf ("\n(Please note that if the sentence is not over 1 year and it is only a few months, please write the months using decimal points. ");
-    printf ("For example, if the sentence of the criminal is only 6 months, for the years alloted for the crime, you will write (0.5) to state 6 months, ");
-    printf ("otherwise just write the whole number if the sentence given is in years.)");
+    printf ("\nThe option selected is a crime punishable by law. The number of years are displayed below.");
 }
 
 void displayInmateSummary(float ProbP, float TotSE) {
-    printf ("\n\nAn inmate is eligible for probation after having served half of their total sentence.");
-    printf (" This will be done through an assessment that will test to see if the inmates' behaviour have improved since they have been inside jail.");
-    printf (" This assessment is given on a date which will be decided by the judge. Thus, this inmate is eligible for probation in: %.1f years time.", ProbP);
+    printf ("\nAn inmate is eligible for probation after having served half of their total sentence.");
+    printf ("\nThis will be done through an assessment that will test to see if the inmates' behaviour have improved since they have been inside jail.");
+    printf ("\nThis assessment is given on a date which will be decided by the judge. Thus, this inmate is eligible for probation in: %.1f years time.", ProbP);
     printf("\n\n");
     printf("The total sentence is %.1f years\n", TotSE);
     printf("The number of persons in the program is %d\n", entryCount);
@@ -246,26 +244,15 @@ void InmateCrimes() {
 int choice;
 int randomYears;
 
-    strcpy( Data.CriSLO[0],"Abuse"); 
-    strcpy(Data.CriSLO [1],"Abusive Sexual Contact");
-    strcpy(Data.CriSLO [2],"Arson");
-    strcpy(Data.CriSLO [3],"Assault");
-    strcpy(Data.CriSLO [4],"Careless Driving");
-    strcpy(Data.CriSLO [5],"Child Abuse");
-    strcpy(Data.CriSLO [6],"Deadly Weapon");
-    strcpy(Data.CriSLO [7],"Embezzlement");
-    strcpy(Data.CriSLO [8],"Illegal Firearm");
-    strcpy(Data.CriSLO [9],"Kidnapping");
-    strcpy(Data.CriSLO [10],"Murder");
-    strcpy(Data.CriSLO [11],"Possession Of Drugs");
-    strcpy(Data.CriSLO [12],"Rape");
-    strcpy(Data.CriSLO [13],"Robbery");
-    strcpy(Data.CriSLO [14],"Stalking");
-    strcpy(Data.CriSLO [15],"Tax Evasion");
-    strcpy(Data.CriSLO [16],"Terrorism");
-    strcpy(Data.CriSLO [17],"Theft");
-    strcpy(Data.CriSLO [18],"Vandalism");
-    strcpy(Data.CriSLO [19],"White Collar Crime");
+    strcpy(Data.CriSLO [0],"Arson");
+    strcpy(Data.CriSLO [1],"Illegal Firearm, Deadly Weapon and Possession of Drugs");
+    strcpy(Data.CriSLO [2],"Kidnapping");
+    strcpy(Data.CriSLO [3],"Murder");
+    strcpy(Data.CriSLO [4],"Rape and abusive sexual contact");
+    strcpy(Data.CriSLO [5],"Robbery and theft");
+    strcpy(Data.CriSLO [6],"Stalking, Assault and Vandalism");
+    strcpy(Data.CriSLO [7],"Terrorism");
+    strcpy(Data.CriSLO [8],"White Collar Crime, Embezzlement and Tax Evasion");
 
     
     srand(time(NULL));
@@ -273,7 +260,7 @@ int randomYears;
 
     printf("\nChoose a crime from the following list:\n");
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 9; i++) {
         printf("[%d] %s\n", i + 1, Data.CriSLO[i]);
     }
 
@@ -282,9 +269,9 @@ int randomYears;
         printf("\nEnter the number corresponding to the crime: ");
         scanf("%d", &choice);
 
-        if (choice >= 1 && choice <= 20) {
+        if (choice >= 1 && choice <= 9) {
              strcpy(Data.CriSLO[0], Data.CriSLO[choice - 1]);
-            int randomYears = rand() % 100 + 1;
+            int randomYears = rand() % 30 + 1;
             sprintf(Data.SenS[0], "%d", randomYears);
 
         
@@ -365,13 +352,18 @@ void registerInmateData() {
 
 void saveInmateData() {
     FILE *fptr;
-    fptr = fopen (INMATE_DATA_FILENAME, "a");
+    fptr = fopen(INMATE_DATA_FILENAME, "a"); // Open file in append mode
 
-    Data = Inmates[entryCount-1];
+    if (fptr != NULL) {
+        Data = Inmates[entryCount-1];
 
-    fprintf (fptr, "%s\n%d\n%s\n%s\n%s\n%s\n%s\n\n", Data.IFname,Data.INage, Data.Indre, Data.INdob,Data.CriSLO, Data.SenS);
-    fclose (fptr);
+        fprintf(fptr, "%s\n%d\n%s\n%s\n%s\n%s\n%s\n\n", Data.IFname, Data.INage, Data.Indre, Data.INdob, Data.CriSLO, Data.SenS);
+        fclose(fptr);
+    } else {
+        printf("Error: Unable to open file for appending.\n");
+    }
 }
+
 
 void displayScreen3() {
     clearScr();  //refreshes the screen
@@ -390,7 +382,7 @@ void screen3(){
 
     pause ("[ENTER] Return to main menu\n", 0);
 
-    mainstream();
+    mainscreen();
 }
 
 void displayInmateData() {
